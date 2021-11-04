@@ -21,8 +21,9 @@ python -m pip install -U matplotlib
 '''
 # Humidity from 0 to 100 percent
 humidity = ctrl.Antecedent(np.arange(0, 100, 1), 'humidity')
+
+# Temperature from 0 to 40 celcius degrees - we assume this plant is in the house
 temperature = ctrl.Antecedent(np.arange(0, 40, 1), 'temperature')
-water_need = ctrl.Antecedent(np.arange(0, 3000, 1), 'water_need')
 
 # Average water need of a certain plant specie from 0 to 1000 ml per day
 # This is AVERAGE and depends from different environment conditions
