@@ -59,17 +59,23 @@ rule7 = ctrl.Rule(temperature['warm'] | humidity['optimal'] | water_need['poor']
 rule8 = ctrl.Rule(temperature['cold'] | humidity['optimal'], water_amount['good'])
 rule9 = ctrl.Rule(humidity['dry'] | temperature['warm'] | water_need['good'], water_amount['average'])
 
+# Set rules needed to operate the fuzzy logic
 water_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9])
 
+# Add the simulation to control system
 water = ctrl.ControlSystemSimulation(water_ctrl)
 
+# Define inputs
 water.input['humidity'] = 90
 water.input['temperature'] = 15
 water.input['water_need'] = 800
 
+# Count output
 water.compute()
 
+# Display output
 print("Ammount of water needed (ml): ", water.output['water_amount'])
 water_amount.view(sim=water)
 
+# Generate table
 plt.show()
