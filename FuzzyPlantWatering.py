@@ -5,13 +5,19 @@ from skfuzzy import control as ctrl
 
 '''
 Flower Power - system nawadniania roślin
-OPIS PROBLEMU:
 
+OPIS PROBLEMU:
 Na podstawie :
 - temperatury
 - zapotrzebowania rośliny na wodę
 - wilgotności powietrza
 zwraca informację o ilośći wody ( na dobę w ml) jaką należy podlać roślinkę z pomocą Fuzzy Logic
+
+Instalacja potrzebnych bibliotek
+
+numpy: pip install numpy
+skfuzzy: pip install skfuzzy
+python -m pip install -U matplotlib
 '''
 # Humidity from 0 to 100 percent
 humidity = ctrl.Antecedent(np.arange(0, 100, 1), 'humidity')
