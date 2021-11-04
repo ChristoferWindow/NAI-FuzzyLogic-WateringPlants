@@ -21,9 +21,8 @@ python -m pip install -U matplotlib
 '''
 # Humidity from 0 to 100 percent
 humidity = ctrl.Antecedent(np.arange(0, 100, 1), 'humidity')
-
-# Temperature from 0 to 40 celcius degrees - we assume this plant is in the house
 temperature = ctrl.Antecedent(np.arange(0, 40, 1), 'temperature')
+water_need = ctrl.Antecedent(np.arange(0, 3000, 1), 'water_need')
 
 # Average water need of a certain plant specie from 0 to 1000 ml per day
 # This is AVERAGE and depends from different environment conditions
@@ -50,22 +49,26 @@ temperature['hot'] = fuzz.trimf(temperature.universe, [23, 33, 40])
 
 # We define set of rules
 rule1 = ctrl.Rule(humidity['dry'] | water_need['poor'], water_amount['average'])
-rule2 = ctrl.Rule(water_need['average'], water_amount['average'])
+rule2 = ctrl.Rule(water_need['average'] | humidity['dry'] | temperature['cold'], water_amount['average'])
 rule3 = ctrl.Rule(temperature['warm'] | water_need['good'], water_amount['good'])
 rule4 = ctrl.Rule(humidity['dry'] | temperature['hot'], water_amount['good'])
-rule5 = ctrl.Rule(water_need['good'] | temperature['optimal'] | humidity['humid'], water_amount['average'])
+rule5 = ctrl.Rule(humidity['humid'] | temperature['optimal'], water_amount['average'])
+rule6 = ctrl.Rule(temperature['hot'] | humidity['humid'], water_amount['average'])
+rule7 = ctrl.Rule(temperature['warm'] | humidity['optimal'] | water_need['poor'], water_amount['poor'])
+rule8 = ctrl.Rule(temperature['cold'] | humidity['optimal'], water_amount['good'])
+rule9 = ctrl.Rule(humidity['dry'] | temperature['warm'] | water_need['good'], water_amount['average'])
 
-water_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5])
+water_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9])
 
 water = ctrl.ControlSystemSimulation(water_ctrl)
 
-water.input['humidity'] = 77
-water.input['temperature'] = 23
-water.input['water_need'] = 450
+water.input['humidity'] = 90
+water.input['temperature'] = 15
+water.input['water_need'] = 800
 
 water.compute()
 
-print(water.output['water_amount'])
+print("Ammount of water needed (ml): ", water.output['water_amount'])
 water_amount.view(sim=water)
 
 plt.show()
