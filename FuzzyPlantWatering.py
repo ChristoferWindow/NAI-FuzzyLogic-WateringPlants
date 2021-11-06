@@ -6,6 +6,10 @@ from skfuzzy import control as ctrl
 '''
 Flower Power - system nawadniania roślin
 
+Autorzy:
+Krzysztof Windorpski s18562
+Krystian Dąbrowski - s18550
+ 
 OPIS PROBLEMU:
 Na podstawie :
 - temperatury
